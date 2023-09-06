@@ -1,0 +1,27 @@
+#!/bin/bash
+
+read -p "Enter '1' to SSH into a server or '2' to copy files using SCP: " choice
+
+if [ "$choice" == "1" ]; then
+    read -p "Enter the remote username: " username
+    read -p "Enter the remote IP address: " ip_address
+    ssh "$username@$ip_address"
+elif [ "$choice" == "2" ]; then
+    read -p "Enter '1' for remote to local or '2' for local to remote copy: " direction
+
+    if [ "$direction" == "1" ]; then
+        read -p "Enter the source file location on the remote server: " source_location
+        read -p "Enter the destination directory on your local machine: " destination_location
+    elif [ "$direction" == "2" ]; then
+        read -p "Enter the source file location on your local machine: " source_location
+        read -p "Enter the destination directory on the remote server: " destination_location
+    else
+        echo "Invalid input. Please enter '1' or '2' for the copy direction."
+        exit 1
+    fi
+
+    scp "$source_location" "$destination_location"
+else
+    echo "Invalid choice. Please enter '1' or '2'."
+    exit 1
+fi
